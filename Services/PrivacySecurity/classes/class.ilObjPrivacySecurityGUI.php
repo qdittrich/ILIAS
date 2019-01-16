@@ -211,7 +211,7 @@ class ilObjPrivacySecurityGUI extends ilObjectGUI
 		$form->addItem($group);
 
 		$cb = new \ilCheckboxInputGUI($this->lng->txt('show_footer_version'), 'show_footer_version');
-		$cb->setInfo('show_footer_version_info');
+		$cb->setInfo($this->lng->txt('show_footer_version_info'));
 		$cb->setValue(true);
 		$cb->setChecked($privacy->getShowFooterVersion());
 		$form->addItem($cb);
