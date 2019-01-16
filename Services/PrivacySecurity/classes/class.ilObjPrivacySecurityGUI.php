@@ -209,6 +209,12 @@ class ilObjPrivacySecurityGUI extends ilObjectGUI
 		$check->setValue('crs_access_times');
 		$group->addOption($check);
 		$form->addItem($group);
+
+		$cb = new \ilCheckboxInputGUI($this->lng->txt('show_footer_version'), 'show_footer_version');
+		$cb->setInfo('show_footer_version_info');
+		$cb->setValue(true);
+		$cb->setChecked($privacy->getShowFooterVersion());
+		$form->addItem($cb);
 		
 		include_once "Services/Administration/classes/class.ilAdministrationSettingsFormHandler.php";
 		ilAdministrationSettingsFormHandler::addFieldsToForm(
@@ -297,8 +303,9 @@ class ilObjPrivacySecurityGUI extends ilObjectGUI
 			'export_confirm_course' => $privacy->courseConfirmationRequired(),
 			'export_confirm_group' => $privacy->groupConfirmationRequired(),
 			'crs_access_times' => $privacy->enabledCourseAccessTimes(),
-			'grp_access_times' => $privacy->enabledGroupAccessTimes()
-		);				
+			'grp_access_times' => $privacy->enabledGroupAccessTimes(),
+			'show_footer_version' => $privacy->getShowFooterVersion()
+		);
 	
 		$privacy->enableCourseExport((int) in_array('export_course', $_POST['profile_protection']));
 		$privacy->enableGroupExport((int) in_array('export_group', $_POST['profile_protection']));
@@ -306,7 +313,8 @@ class ilObjPrivacySecurityGUI extends ilObjectGUI
 		$privacy->setGroupConfirmationRequired((int) in_array('export_confirm_group', $_POST['profile_protection']));
 		$privacy->showGroupAccessTimes((int) in_array('grp_access_times', $_POST['profile_protection']));
 		$privacy->showCourseAccessTimes((int) in_array('crs_access_times', $_POST['profile_protection']));
-		
+		$privacy->setShowFooterVersion((int) isset($_POST['show_footer_version']));
+
         // validate settings
         $code = $privacy->validate();
 
@@ -343,6 +351,10 @@ class ilObjPrivacySecurityGUI extends ilObjectGUI
 				$do_reset = true;
 			}
 			if(!$do_reset && !$old_settings['grp_access_times'] && $privacy->enabledGroupAccessTimes())
+			{
+				$do_reset = true;
+			}
+			if(!$do_reset && !$old_settings['show_footer_version'] && $privacy->getShowFooterVersion())
 			{
 				$do_reset = true;
 			}

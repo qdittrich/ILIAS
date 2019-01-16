@@ -53,6 +53,7 @@ class ilPrivacySettings
 		private $ref_id;
 		private $sahs_protocol_data;
 		private $export_scorm;
+		private $show_footer_version;
 
     /**
 	 * Private constructor: use _getInstance()
@@ -340,7 +341,27 @@ class ilPrivacySettings
 	{
 		return (bool) $this->show_crs_access_times;
 	}
-	
+
+	/**
+	 * show ILIAS version in footer
+	 *
+	 * @return mixed
+	 */
+	public function getShowFooterVersion()
+	{
+		return $this->show_footer_version;
+	}
+
+	/**
+	 * @param bool $a_show_footer_version
+	 * @return void
+	 */
+	public function setShowFooterVersion($a_show_footer_version)
+	{
+		$this->show_footer_version = $a_show_footer_version;
+	}
+
+
 	/**
 	 * Check if access time are enabled for a specific type
 	 * @param type $a_obj_type
@@ -380,6 +401,7 @@ class ilPrivacySettings
 		$this->settings->set('rbac_log_age',(int) $this->getRbacLogAge());
 		$this->settings->set('enable_sahs_pd',(int) $this->enabledSahsProtocolData());
 		$this->settings->set('ps_export_scorm',(bool) $this->enabledExportSCORM());
+		$this->settings->set('show_footer_version',(bool) $this->getShowFooterVersion());
 	}
 	/**
 	 * read settings
@@ -410,11 +432,12 @@ class ilPrivacySettings
 		$this->fora_statistics = (bool) $this->settings->get('enable_fora_statistics',false);
 		$this->anonymous_fora = (bool) $this->settings->get('enable_anonymous_fora',false);
 		$this->show_grp_access_times = (bool) $this->settings->get('ps_access_times',false);
-		$this->show_crs_access_times = (bool) $this->settings->get('ps_crs_access_times',false);
+		$this->export_scorm = (bool) $this->settings->get('ps_crs_access_times',false);
 		$this->rbac_log = (bool) $this->settings->get('rbac_log',false);
 		$this->rbac_log_age = (int) $this->settings->get('rbac_log_age',6);
 		$this->sahs_protocol_data = (int) $this->settings->get('enable_sahs_pd', 0);
 		$this->export_scorm = (bool) $this->settings->get('ps_export_scorm',false);
+		$this->show_footer_version = (bool) $this->settings->get('show_footer_version',false);
 	}
 
 	/**
